@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iTab Creator</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 24px;
+            background: var(--gray-100);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Preview Section */
+        .preview-section {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .preview-header {
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .preview-title {
+            font-size: 18px;
+            color: var(--primary-dark);
+            margin: 0;
+        }
+
+        .preview-demo {
+            background: var(--gray-50);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        /* Form Section */
+        .form-section {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .form-title {
+            font-size: 20px;
+            color: var(--primary-dark);
+            margin: 0 0 24px 0;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus,
+        input[type="url"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Image Upload */
+        .image-upload {
+            border: 2px dashed var(--gray-300);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .image-upload:hover {
+            border-color: var(--primary);
+            background: var(--gray-50);
+        }
+
+        .upload-preview {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 12px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        /* Preview Popup Styles */
+        .preview-popup {
+            width: 320px;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+
+        .popup-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+        }
+
+        .popup-title {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .popup-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .popup-content {
+            padding: 15px;
+        }
+
+        .popup-text {
+            margin: 0 0 15px 0;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--gray-700);
+        }
+
+        .popup-button {
+            display: block;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            margin: 0 15px 15px;
+            transition: background-color 0.2s;
+        }
+
+        .popup-button:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Save Button */
+        .save-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+            margin-top: 24px;
+        }
+
+        .save-button:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Example Link */
+        .example-link {
+            color: var(--primary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Live Preview Section -->
+        <div class="preview-section">
+            <div class="preview-header">
+                <h2 class="preview-title">Live Preview</h2>
+            </div>
+            <div class="preview-demo">
+                <p>
+                    Here's our latest update! 
+                    <span class="example-link">
+                        Learn more
+                        <span class="info-icon">i</span>
+                    </span>
+                </p>
+                <!-- Preview Popup -->
+                <div class="preview-popup">
+                    <div class="popup-header">
+                        <h3 class="popup-title" id="previewTitle">Your Title Here</h3>
+                    </div>
+                    <img src="/api/placeholder/320/180" alt="Preview" class="popup-image" id="previewImage">
+                    <div class="popup-content">
+                        <p class="popup-text" id="previewText">Your content will appear here...</p>
+                        <a href="#" class="popup-button" id="previewButton">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <div class="form-section">
+            <h1 class="form-title">Create Your iTab</h1>
+            <form id="iTabForm">
+                <div class="input-group">
+                    <label>Title</label>
+                    <input type="text" id="titleInput" placeholder="Enter your title" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Image</label>
+                    <div class="image-upload" onclick="document.getElementById('imageInput').click()">
+                        <input type="file" id="imageInput" hidden accept="image/*">
+                        <div>Click or drag to upload image</div>
+                        <img id="uploadPreview" class="upload-preview">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Content</label>
+                    <textarea id="contentInput" placeholder="Enter your content" required></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>Button Text</label>
+                    <input type="text" id="buttonTextInput" placeholder="Enter button text" value="Learn More">
+                </div>
+
+                <div class="input-group">
+                    <label>Button URL</label>
+                    <input type="url" id="buttonUrlInput" placeholder="Enter button URL" required>
+                </div>
+
+                <button type="submit" class="save-button">Save iTab</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Live Preview Updates
+        function updatePreview() {
+            document.getElementById('previewTitle').textContent = 
+                document.getElementById('titleInput').value || 'Your Title Here';
+            
+            document.getElementById('previewText').textContent = 
+                document.getElementById('contentInput').value || 'Your content will appear here...';
+            
+            document.getElementById('previewButton').textContent = 
+                document.getElementById('buttonTextInput').value || 'Learn More';
+            
+            document.getElementById('previewButton').href = 
+                document.getElementById('buttonUrlInput').value || '#';
+        }
+
+        // Image Upload
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('uploadPreview').src = e.target.result;
+                    document.getElementById('uploadPreview').style.display = 'block';
+                    document.getElementById('previewImage').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Form Updates
+        document.querySelectorAll('input, textarea').forEach(input => {
+            input.addEventListener('input', updatePreview);
+        });
+
+        // Form Submission
+        document.getElementById('iTabForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('iTab saved successfully!');
+        });
+
+        // Drag and Drop
+        const uploadArea = document.querySelector('.image-upload');
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = 'var(--primary)';
+            uploadArea.style.background = 'var(--gray-50)';
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = 'var(--gray-300)';
+            uploadArea.style.background = 'white';
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = 'var(--gray-300)';
+            uploadArea.style.background = 'white';
+            
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('uploadPreview').src = e.target.result;
+                    document.getElementById('uploadPreview').style.display = 'block';
+                    document.getElementById('previewImage').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>
