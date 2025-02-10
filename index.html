@@ -3,6 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expandable Teaser</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f0f2f5;
+        }
+
+        .demo-area {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        /* Link and Icon */
+        .teaser-link {
+            color: #2563eb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            background: #2563eb;
+            color: white;
+            border-radius: 50%;
+            font-size: 12px;
+            margin-left: 4px;
+            cursor: help;
+        }
+
+        /* Teaser Popup */
+        .teaser-popup {
+            position: absolute;
+            width: 320px;
+            background: white;
+            border: 2px solid #2563eb;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .teaser-popup.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Header */
+        .teaser-header {
+            background: #2563eb;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: white;
+        }
+
+        .header-text {
+            flex-grow: 1;
+        }
+
+        .header-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .header-subtitle {
+            font-size: 12px;
+            opacity: 0.9;
+            margin: 2px 0 0 0;
+        }
+
+        /* Tab Bar - Ready for expansion */
+        .tab-bar {
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 15px;
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+
+        .tab-bar::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .tab {
+            padding: 12px 15px;
+            color: #2563eb;
+            font-size: 14px;
+            font-weight: 500;
+            border-bottom: 2px solid #2563eb;
+            white-space: nowrap;
+        }
+
+        /* Content Area */
+        .content-area {
+            padding: 15px;
+        }
+
+        .content-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .content-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #334155;
+            margin: 0;
+        }
+
+        /* Learn More Button */
+        .learn-more {
+            display: block;
+            background: #2563eb;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            border-radius: 6px;
+            margin: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .learn-more:hover {
+            background: #1e40af;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-area">
+        <p>
+            Discover our latest updates! 
+            <span class="teaser-link">
+                Learn more
+                <span class="info-icon" onmouseover="showTeaser(event)" onmouseout="hideTeaser()" onclick="toggleTeaser(event)">i</span>
+            </span>
+            about what's new.
+        </p>
+
+        <!-- Teaser Popup -->
+        <div class="teaser-popup" id="teaserPopup">
+            <!-- Header -->
+            <div class="teaser-header">
+                <img src="/api/placeholder/50/50" alt="Logo" class="header-image">
+                <div class="header-text">
+                    <h3 class="header-title">Product Name</h3>
+                    <p class="header-subtitle">Quick description here</p>
+                </div>
+            </div>
+
+            <!-- Tab Bar - Ready for future tabs -->
+            <div class="tab-bar">
+                <div class="tab">Overview</div>
+                <!-- Future tabs will go here -->
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <img src="/api/placeholder/320/180" alt="Content" class="content-image">
+                <p class="content-text">
+                    Experience our innovative solution designed to make your life easier. 
+                    Built with the latest technology and user-friendly features.
+                </p>
+            </div>
+
+            <!-- Action Button -->
+            <a href="#" class="learn-more">Learn More</a>
+        </div>
+    </div>
+
+    <script>
+        const popup = document.getElementById('teaserPopup');
+        let isLocked = false;
+
+        function showTeaser(event) {
+            if (!isLocked) {
+                positionTeaser(event);
+                popup.classList.add('show');
+            }
+        }
+
+        function hideTeaser() {
+            if (!isLocked) {
+                popup.classList.remove('show');
+            }
+        }
+
+        function toggleTeaser(event) {
+            event.stopPropagation();
+            isLocked = !isLocked;
+            if (isLocked) {
+                positionTeaser(event);
+                popup.classList.add('show');
+            } else {
+                popup.classList.remove('show');
+            }
+        }
+
+        function positionTeaser(event) {
+            const rect = event.target.getBoundingClientRect();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+            let top = rect.bottom + scrollTop + 10;
+            let left = rect.left + scrollLeft - 150 + (rect.width / 2);
+
+            // Adjust if too close to right edge
+            if (left + 320 > window.innerWidth) {
+                left = window.innerWidth - 340;
+            }
+            // Adjust if too close to left edge
+            if (left < 20) {
+                left = 20;
+            }
+
+            popup.style.top = `${top}px`;
+            popup.style.left = `${left}px`;
+        }
+
+        // Close teaser when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!popup.contains(event.target) && 
+                !event.target.classList.contains('info-icon')) {
+                isLocked = false;
+                popup.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iTab Creator</title>
     <style>
         :root {
